@@ -474,7 +474,7 @@ void HeliosKwlComponent::publish_states(uint8_t v) {
   bool power = (v >> BIT_POWER) & 1;
   bool co2r = (v >> BIT_CO2_REG) & 1;
   bool humr = (v >> BIT_HUMIDITY_REG) & 1;
-  bool summer = (v >> BIT_SUMMER_MODE) & 1;
+  bool summer = !(v >> BIT_SUMMER_MODE) & 1;
   fan_state_ready_ = true;
   if (fan_ && fan_->state != power) { fan_->state = power; fan_->publish_state(); }
   if (co2_regulation_)      co2_regulation_->publish_state(co2r);
@@ -614,7 +614,7 @@ void HeliosKwlComponent::control_humidity_regulation(bool e) {
 }
 void HeliosKwlComponent::control_summer_mode(bool e) {
   ESP_LOGI(TAG, "[CMD] Mode ete -> %s", e ? "ON" : "OFF");
-  write_bit(REG_STATES, BIT_SUMMER_MODE, e);
+  write_bit(REG_STATES, BIT_SUMMER_MODE, !e);
 }
 
 void HeliosKwlComponent::control_basic_fan_speed(uint8_t s)   { write_register(REG_BASIC_SPEED, speed_to_bitmask(s)); }
