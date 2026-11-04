@@ -474,7 +474,7 @@ void HeliosKwlComponent::publish_states(uint8_t v) {
   bool power = (v >> BIT_POWER) & 1;
   bool co2r = (v >> BIT_CO2_REG) & 1;
   bool humr = (v >> BIT_HUMIDITY_REG) & 1;
-  bool summer = !(v >> BIT_SUMMER_MODE) & 1;
+  bool summer = !((v >> BIT_SUMMER_MODE) & 1);
   fan_state_ready_ = true;
   if (fan_ && fan_->state != power) { fan_->state = power; fan_->publish_state(); }
   if (co2_regulation_)      co2_regulation_->publish_state(co2r);
